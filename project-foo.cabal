@@ -1,5 +1,5 @@
 Name:                project-foo
-Version:             0.0
+Version:             0.0.0
 Cabal-Version:       >= 1.2
 Synopsis:            
 Category:            
@@ -7,9 +7,6 @@ Description:
   What's it about?
   .
   Project wiki page: <http://haskell.org/haskellwiki/project-foo>
-  .
-  The module documentation pages have links to colorized source code and
-  to wiki pages where you can read and contribute user comments.  Enjoy!
   .
   &#169; 2008 by Conal Elliott; BSD3 license.
 Author:              Conal Elliott 
