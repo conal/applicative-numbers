@@ -1,13 +1,14 @@
 [[Category:Packages]]
+[[Category:Applicative]]
+[[Category:Mathematics]]
 
 == Abstract ==
 
-'''project-foo''' is a template for a package, to make it easy to copy & modify.  It uses [[cabal-make]] for convenience.  It's even equipped with a darcs repo.  Copy the directory ("cp -rp"), "darcs mv" the .cabal file, edit README and wikipage.tw.  Then "darcs update" the changes and add new content with "make check-add" and "make add-new".
+Any applicative functor can be given numeric instances in a boilerplate way.
+The '''applicative-numbers''' package provides an include file that makes it a snap to define these instances.
 
-Besides this wiki page, here are more ways to find out about project-foo:
-* Visit the [http://hackage.haskell.org/cgi-bin/hackage-scripts/package/project-foo Hackage page] for library documentation and to download & install.
-* Or install with <tt>cabal install project-foo</tt>.
-* Get the code repository: <tt>darcs get http://code.haskell.org/project-foo</tt>.
-<!-- * See the [[project-foo/Versions| version history]]. -->
-
-Please leave comments at the [[Talk:project-foo|Talk page]].
+Besides this wiki page, here are more ways to find out about applicative-numbers:
+* Visit the [http://hackage.haskell.org/cgi-bin/hackage-scripts/package/applicative-numbers Hackage page] for library documentation and to download & install.
+* Or install with <tt>cabal install applicative-numbers</tt>.
+* Get the code repository: <tt>darcs get http://code.haskell.org/~conal/code/applicative-numbers</tt>.
+<!-- * See the [[applicative-numbers/Versions| version history]]. -->

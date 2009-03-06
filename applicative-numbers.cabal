@@ -1,5 +1,5 @@
 name:                applicative-numbers
-version:             0.0.0
+version:             0.0.1
 cabal-version:       >= 1.2
 synopsis:            Applicative-based numeric instances
 category:            Data, Numerical
@@ -10,13 +10,13 @@ description:
   .
   Project wiki page: <http://haskell.org/haskellwiki/applicative-numbers>
   .
-  Copyright 2009 Conal Elliott; GPLv3 license.
+  Copyright 2009 Conal Elliott; BSD3 license.
 author:              Conal Elliott 
 maintainer:          conal@conal.net
 homepage:            http://haskell.org/haskellwiki/applicative-numbers
 package-url:         http://code.haskell.org/applicative-numbers
 copyright:           (c) 2009 by Conal Elliott
-license:             GPL
+license:             BSD3
 license-file:        COPYING
 stability:           experimental
 build-type:          Simple
