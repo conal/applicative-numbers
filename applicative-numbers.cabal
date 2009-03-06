@@ -1,0 +1,34 @@
+Name:                applicative-numbers
+Version:             0.0.0
+Cabal-Version:       >= 1.2
+Synopsis:            Applicative-based numeric instances
+Category:            Data, Numerical
+Description:
+  Any applicative functor can be given numeric instances in a boilerplate way.
+  The /applicative-numbers/ package provides an include file that makes it a
+  snap to define these instances.
+  .
+  Project wiki page: <http://haskell.org/haskellwiki/applicative-numbers>
+  .
+  Copyright 2009 Conal Elliott; GPLv3 license.
+Author:              Conal Elliott 
+Maintainer:          conal@conal.net
+Homepage:            http://haskell.org/haskellwiki/applicative-numbers
+Package-Url:         http://code.haskell.org/applicative-numbers
+Copyright:           (c) 2009 by Conal Elliott
+License:             GPL
+License-File:        COPYING
+Stability:           experimental
+build-type:          Simple
+
+Library
+  hs-Source-Dirs:      src
+  include-dirs:        src
+
+  Extensions:
+  Build-Depends:       base
+  Exposed-Modules:     
+  Install-Includes:    ApplicativeNumeric-inc.hs
+  ghc-options:         -Wall
+
+--  ghc-prof-options:    -prof -auto-all 
