@@ -1,5 +1,5 @@
 name:                applicative-numbers
-version:             0.0.2
+version:             0.0.3
 cabal-version:       >= 1.2
 synopsis:            Applicative-based numeric instances
 category:            Data, Numerical
@@ -26,10 +26,9 @@ Library
   include-dirs:        src
 
   extensions:
-  build-depends:       base, wl-pprint
+  build-depends:       base
   exposed-modules:     
                        Data.Numeric.Function
-                       Data.Numeric.Vec
   install-includes:    ApplicativeNumeric-inc.hs
   ghc-options:         -Wall
 
