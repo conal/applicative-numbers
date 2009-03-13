@@ -1,4 +1,6 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, MultiParamTypeClasses, FunctionalDependencies
+                , FlexibleInstances, FlexibleContexts
+ #-}
 {-# OPTIONS_GHC -Wall -fno-warn-orphans #-}
 ----------------------------------------------------------------------
 -- |
@@ -19,7 +21,7 @@ module Data.Numeric.Vec
   -- * Component extraction
   , HasX(..), HasY(..), HasZ(..), HasW(..)
   -- * Boolean operations
-  , BoolOps(..)
+  , BoolV(..), BoolOpV(..), EqV(..), OrdV(..)
   ) where
 
 import Control.Applicative (Applicative(..),liftA2)
@@ -96,77 +98,122 @@ instance Eq a => Eq (Vec4 a) where
     Component extraction and friends
 --------------------------------------------------------------------}
 
-class           HasX f where getX :: f a -> a
-class HasX f => HasY f where getY :: f a -> a
-class HasY f => HasZ f where getZ :: f a -> a
-class HasZ f => HasW f where getW :: f a -> a
+class HasX fa a | fa -> a    where getX :: fa -> a
+class HasX fa a => HasY fa a where getY :: fa -> a
+class HasY fa a => HasZ fa a where getZ :: fa -> a
+class HasZ fa a => HasW fa a where getW :: fa -> a
 
-instance HasX Vec1 where getX (Vec1 x)       = x
-instance HasX Vec2 where getX (Vec2 x _)     = x
-instance HasX Vec3 where getX (Vec3 x _ _)   = x
-instance HasX Vec4 where getX (Vec4 x _ _ _) = x
+instance HasX (Vec1 a) a where getX (Vec1 x)       = x
+instance HasX (Vec2 a) a where getX (Vec2 x _)     = x
+instance HasX (Vec3 a) a where getX (Vec3 x _ _)   = x
+instance HasX (Vec4 a) a where getX (Vec4 x _ _ _) = x
 
-instance HasY Vec2 where getY (Vec2 _ y)     = y
-instance HasY Vec3 where getY (Vec3 _ y _)   = y
-instance HasY Vec4 where getY (Vec4 _ y _ _) = y
+instance HasY (Vec2 a) a where getY (Vec2 _ y)     = y
+instance HasY (Vec3 a) a where getY (Vec3 _ y _)   = y
+instance HasY (Vec4 a) a where getY (Vec4 _ y _ _) = y
 
-instance HasZ Vec3 where getZ (Vec3 _ _ z)   = z
-instance HasZ Vec4 where getZ (Vec4 _ _ z _) = z
+instance HasZ (Vec3 a) a where getZ (Vec3 _ _ z)   = z
+instance HasZ (Vec4 a) a where getZ (Vec4 _ _ z _) = z
 
-instance HasW Vec4 where getW (Vec4 _ _ _ w) = w
+instance HasW (Vec4 a) a where getW (Vec4 _ _ _ w) = w
 
+
+{--------------------------------------------------------------------
+    Boolean vector operations
+--------------------------------------------------------------------}
 
 infix  4  ==^, /=^, <^, <=^, >=^, >^
 
-class BoolOps f where
-  (>^), (<^), (>=^), (<=^), (==^), (/=^)
-             :: Ord a => f a -> f a -> f Bool
-  andV, orV  :: f Bool -> Bool
-  notV       :: f Bool -> f Bool
+class BoolV bools where
+  notV :: bools -> bools
+  -- Could add trueV, falseV
 
-instance BoolOps Vec1 where
+instance BoolV Bool where notV = not
+
+class BoolV bool => BoolOpV bools bool | bools -> bool where
+  allV, anyV :: bools -> bool
+
+class BoolV bools => EqV a bools | a -> bools where
+  (==^), (/=^) :: a -> a -> bools
+  (/=^) = (fmap.fmap) notV (==^)
+
+-- | Ordered vectors.  Minimum instance: '(<^)' and '(<=^)'
+class EqV a bools => OrdV a bools where
+  (>^), (<^), (>=^), (<=^) :: a -> a -> bools
+  (>^)  = (fmap.fmap) notV (<=^)
+  (>=^) = (fmap.fmap) notV (<^)
+
+instance BoolV (Vec1 Bool) where
+  notV (Vec1 a) = Vec1 (not a)
+
+instance BoolOpV (Vec1 Bool) Bool where
+  allV (Vec1 a)      = a
+  anyV  (Vec1 a)      = a
+
+instance Eq a => EqV (Vec1 a) (Vec1 Bool) where
+  Vec1 a ==^ Vec1 a' = Vec1 (a == a')
+  Vec1 a /=^ Vec1 a' = Vec1 (a /= a')
+
+instance Ord a => OrdV (Vec1 a) (Vec1 Bool) where
   Vec1 a >^  Vec1 a' = Vec1 (a >  a')
   Vec1 a <^  Vec1 a' = Vec1 (a <  a')
   Vec1 a >=^ Vec1 a' = Vec1 (a >= a')
   Vec1 a <=^ Vec1 a' = Vec1 (a <= a')
-  Vec1 a ==^ Vec1 a' = Vec1 (a == a')
-  Vec1 a /=^ Vec1 a' = Vec1 (a /= a')
-  andV (Vec1 a)      = a
-  orV  (Vec1 a)      = a
-  notV (Vec1 a)      = Vec1 (not a)
 
-instance BoolOps Vec2 where
+
+instance BoolV (Vec2 Bool) where
+  notV (Vec2 a b) = Vec2 (not a) (not b)
+
+instance BoolOpV (Vec2 Bool) Bool where
+  allV (Vec2 a b) = a && b
+  anyV  (Vec2 a b) = a || b
+
+instance Eq a => EqV (Vec2 a) (Vec2 Bool) where
+  Vec2 a b ==^ Vec2 a' b' = Vec2 (a == a') (b == b')
+  Vec2 a b /=^ Vec2 a' b' = Vec2 (a /= a') (b /= b')
+
+instance Ord a => OrdV (Vec2 a) (Vec2 Bool) where
   Vec2 a b >^  Vec2 a' b' = Vec2 (a >  a') (b >  b')
   Vec2 a b <^  Vec2 a' b' = Vec2 (a <  a') (b <  b')
   Vec2 a b >=^ Vec2 a' b' = Vec2 (a >= a') (b >= b')
   Vec2 a b <=^ Vec2 a' b' = Vec2 (a <= a') (b <= b')
-  Vec2 a b ==^ Vec2 a' b' = Vec2 (a == a') (b == b')
-  Vec2 a b /=^ Vec2 a' b' = Vec2 (a /= a') (b /= b')
-  andV (Vec2 a b)         = a && b
-  orV  (Vec2 a b)         = a || b
-  notV (Vec2 a b)         = Vec2 (not a) (not b)
 
-instance BoolOps Vec3 where
+
+instance BoolV (Vec3 Bool) where
+  notV (Vec3 a b c) = Vec3 (not a) (not b) (not c)
+
+instance BoolOpV (Vec3 Bool) Bool where
+  allV (Vec3 a b c) = a && b && c
+  anyV  (Vec3 a b c) = a || b || c
+
+instance Eq a => EqV (Vec3 a) (Vec3 Bool) where
+  Vec3 a b c ==^ Vec3 a' b' c' = Vec3 (a == a') (b == b') (c == c')
+  Vec3 a b c /=^ Vec3 a' b' c' = Vec3 (a /= a') (b /= b') (c /= c')
+
+instance Ord a => OrdV (Vec3 a) (Vec3 Bool) where
   Vec3 a b c >^  Vec3 a' b' c' = Vec3 (a >  a') (b >  b') (c >  c')
   Vec3 a b c <^  Vec3 a' b' c' = Vec3 (a <  a') (b <  b') (c <  c')
   Vec3 a b c >=^ Vec3 a' b' c' = Vec3 (a >= a') (b >= b') (c >= c')
   Vec3 a b c <=^ Vec3 a' b' c' = Vec3 (a <= a') (b <= b') (c <= c')
-  Vec3 a b c ==^ Vec3 a' b' c' = Vec3 (a == a') (b == b') (c == c')
-  Vec3 a b c /=^ Vec3 a' b' c' = Vec3 (a /= a') (b /= b') (c /= c')
-  andV (Vec3 a b c)         = a && b && c
-  orV  (Vec3 a b c)         = a || b || c
-  notV (Vec3 a b c)         = Vec3 (not a) (not b) (not c)
 
-instance BoolOps Vec4 where
+
+instance BoolV (Vec4 Bool) where
+  notV (Vec4 a b c d) = Vec4 (not a) (not b) (not c) (not d)
+
+instance BoolOpV (Vec4 Bool) Bool where
+  allV (Vec4 a b c d) = a && b && c && d
+  anyV (Vec4 a b c d) = a || b || c || d
+
+instance Eq a => EqV (Vec4 a) (Vec4 Bool) where
+  Vec4 a b c d ==^ Vec4 a' b' c' d' = Vec4 (a == a') (b == b') (c == c') (d == d')
+  Vec4 a b c d /=^ Vec4 a' b' c' d' = Vec4 (a /= a') (b /= b') (c /= c') (d /= d')
+
+instance Ord a => OrdV (Vec4 a) (Vec4 Bool) where
   Vec4 a b c d >^  Vec4 a' b' c' d' = Vec4 (a >  a') (b >  b') (c >  c') (d >  d')
   Vec4 a b c d <^  Vec4 a' b' c' d' = Vec4 (a <  a') (b <  b') (c <  c') (d <  d')
   Vec4 a b c d >=^ Vec4 a' b' c' d' = Vec4 (a >= a') (b >= b') (c >= c') (d >= d')
   Vec4 a b c d <=^ Vec4 a' b' c' d' = Vec4 (a <= a') (b <= b') (c <= c') (d <= d')
-  Vec4 a b c d ==^ Vec4 a' b' c' d' = Vec4 (a == a') (b == b') (c == c') (d == d')
-  Vec4 a b c d /=^ Vec4 a' b' c' d' = Vec4 (a /= a') (b /= b') (c /= c') (d /= d')
-  andV (Vec4 a b c d)         = a && b && c && d
-  orV  (Vec4 a b c d)         = a || b || c || d
-  notV (Vec4 a b c d)         = Vec4 (not a) (not b) (not c) (not d)
+
 
 
 {--------------------------------------------------------------------
