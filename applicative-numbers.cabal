@@ -26,9 +26,10 @@ Library
   include-dirs:        src
 
   extensions:
-  build-depends:       base
+  build-depends:       base, wl-pprint
   exposed-modules:     
                        Data.Numeric.Function
+                       Data.Numeric.Vec
   install-includes:    ApplicativeNumeric-inc.hs
   ghc-options:         -Wall
 
