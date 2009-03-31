@@ -58,16 +58,16 @@ noOv meth = error $ meth ++ ": No overloading"
 -- Hack: the Functor [] is a no-op that allows for a ","-terminated CONSTRAINTS
 -- Requires FlexibleContexts
 #ifdef INSTANCE_Eq
-instance (CONSTRAINTS Functor []) => Eq (APPLICATIVE f9ksE) where (==) = noOv "(==)"
+instance (CONSTRAINTS Functor []) => Eq (APPLICATIVE applicative_arg) where (==) = noOv "(==)"
 #endif
 
 #ifdef INSTANCE_Ord
-instance (CONSTRAINTS Ord f9ksE) => Ord (APPLICATIVE f9ksE) where
+instance (CONSTRAINTS Ord applicative_arg) => Ord (APPLICATIVE applicative_arg) where
   { min = liftA2 min ; max = liftA2 max }
 #endif
 
 #ifdef INSTANCE_Show
-instance Show (APPLICATIVE f9ksE) where
+instance Show (APPLICATIVE applicative_arg) where
   { show      = noOv "show"
   ; showsPrec = noOv "showsPrec"
   ; showList  = noOv "showList"
@@ -75,7 +75,7 @@ instance Show (APPLICATIVE f9ksE) where
 #endif
 
 #ifdef INSTANCE_Enum
-instance (CONSTRAINTS Enum f9ksE) => Enum (APPLICATIVE f9ksE) where
+instance (CONSTRAINTS Enum applicative_arg) => Enum (APPLICATIVE applicative_arg) where
   { succ           = fmap succ
   ; pred           = fmap pred
   ; toEnum         = pure . toEnum
@@ -87,7 +87,7 @@ instance (CONSTRAINTS Enum f9ksE) => Enum (APPLICATIVE f9ksE) where
   }
 #endif
 
-instance (CONSTRAINTS Num f9ksE) => Num (APPLICATIVE f9ksE) where
+instance (CONSTRAINTS Num applicative_arg) => Num (APPLICATIVE applicative_arg) where
   negate      = fmap negate
   (+)         = liftA2 (+)
   (*)         = liftA2 (*)
@@ -95,10 +95,10 @@ instance (CONSTRAINTS Num f9ksE) => Num (APPLICATIVE f9ksE) where
   abs         = fmap abs
   signum      = fmap signum
 
-instance (CONSTRAINTS Num f9ksE, Ord f9ksE) => Real (APPLICATIVE f9ksE) where
+instance (CONSTRAINTS Num applicative_arg, Ord applicative_arg) => Real (APPLICATIVE applicative_arg) where
   toRational = noOv "toRational"
 
-instance (CONSTRAINTS Integral f9ksE) => Integral (APPLICATIVE f9ksE) where
+instance (CONSTRAINTS Integral applicative_arg) => Integral (APPLICATIVE applicative_arg) where
   quot          = liftA2 quot
   rem           = liftA2 rem
   div           = liftA2 div
@@ -107,11 +107,11 @@ instance (CONSTRAINTS Integral f9ksE) => Integral (APPLICATIVE f9ksE) where
   x `quotRem` y = (x `quot` y, x `rem` y)
   x `divMod`  y = (x `div`  y, x `mod` y)
 
-instance (CONSTRAINTS Fractional f9ksE) => Fractional (APPLICATIVE f9ksE) where
+instance (CONSTRAINTS Fractional applicative_arg) => Fractional (APPLICATIVE applicative_arg) where
   recip        = fmap recip
   fromRational = pure . fromRational
 
-instance (CONSTRAINTS Floating f9ksE) => Floating (APPLICATIVE f9ksE) where
+instance (CONSTRAINTS Floating applicative_arg) => Floating (APPLICATIVE applicative_arg) where
   pi    = pure pi
   sqrt  = fmap sqrt
   exp   = fmap exp
@@ -127,14 +127,14 @@ instance (CONSTRAINTS Floating f9ksE) => Floating (APPLICATIVE f9ksE) where
   atanh = fmap atanh
   acosh = fmap acosh
 
-instance (CONSTRAINTS RealFrac f9ksE) => RealFrac (APPLICATIVE f9ksE) where
+instance (CONSTRAINTS RealFrac applicative_arg) => RealFrac (APPLICATIVE applicative_arg) where
   properFraction = noOv "properFraction"
   truncate       = noOv "truncate"
   round          = noOv "round"
   ceiling        = noOv "ceiling"
   floor          = noOv "floor"
 
-instance (CONSTRAINTS RealFloat f9ksE) => RealFloat (APPLICATIVE f9ksE) where
+instance (CONSTRAINTS RealFloat applicative_arg) => RealFloat (APPLICATIVE applicative_arg) where
   floatRadix     = noOv "floatRadix"
   floatDigits    = noOv "floatDigits"
   floatRange     = noOv "floatRange"
