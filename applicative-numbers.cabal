@@ -1,5 +1,5 @@
 name:                applicative-numbers
-version:             0.0.4
+version:             0.0.5
 cabal-version:       >= 1.2
 synopsis:            Applicative-based numeric instances
 category:            Data, Numerical
@@ -7,6 +7,8 @@ description:
   Any applicative functor can be given numeric instances in a boilerplate way.
   The /applicative-numbers/ package provides an include file that makes it a
   snap to define these instances.
+  See @src/ApplicativeNumeric-inc.hs@ for details and
+  @src/Data/Numeric/Function.hs@ for an example.
   .
   Project wiki page: <http://haskell.org/haskellwiki/applicative-numbers>
   .
