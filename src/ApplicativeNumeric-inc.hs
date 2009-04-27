@@ -6,39 +6,6 @@ License     :  GPL-3
 Maintainer  :  conal@conal.net
 Stability   :  experimental
 
-Instances of Num classes for applicative functors.  To be #include'd after
-defining APPLICATIVE as the applicative functor name and CONSTRAINTS as a
-list of constraints, which must carry its own trailing comma if non-empty.
-The APPLICATIVE symbol gets #undef'd at the end of this include file, so
-that multiple includes are convenient.
-
-For instance,
-
-    -- Generate Ord & Enum, but not Eq & Show
-    #define INSTANCE_Ord
-    #define INSTANCE_Enum
-
-    #define APPLICATIVE Vec2
-    #include "ApplicativeNumeric-inc.hs"
-
-    #define APPLICATIVE Vec3
-    #include "ApplicativeNumeric-inc.hs"
-
-    #define APPLICATIVE Vec4
-    #include "ApplicativeNumeric-inc.hs"
-
-
-You'll also have to import 'pure' and 'liftA2' from "Control.Applicative"
-and specify the FlexibleContexts language extension (due to a hack below).
-
-Some instances are generated only if a corresponding CPP symbol is
-defined:
-
-+ INSTANCE_Eq
-+ INSTANCE_Ord
-+ INSTANCE_Show
-+ INSTANCE_Enum
-
 -----------------------------------------------------------------------}
 
 #ifndef CONSTRAINTS
