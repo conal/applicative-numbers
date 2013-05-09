@@ -1,5 +1,5 @@
 name:                applicative-numbers
-version:             0.0.9
+version:             0.1.0
 cabal-version:       >= 1.2
 synopsis:            Applicative-based numeric instances
 category:            Data, Numerical
@@ -46,7 +46,7 @@ author:              Conal Elliott
 maintainer:          conal@conal.net
 homepage:            http://haskell.org/haskellwiki/applicative-numbers
 package-url:         http://code.haskell.org/applicative-numbers
-copyright:           (c) 2009 by Conal Elliott
+copyright:           (c) 2009-2011 by Conal Elliott
 license:             BSD3
 license-file:        COPYING
 stability:           experimental
@@ -61,6 +61,13 @@ Library
   exposed-modules:     
                        Data.Numeric.Function
   install-includes:    ApplicativeNumeric-inc.hs
+                       ApplicativeNumeric-inc.lhs
+
+--                        T1.hs
+--                        T1.lhs
+
+-- T1 is for testing
+
   ghc-options:         -Wall
 
---  ghc-prof-options:    -prof -auto-all 
+ ghc-prof-options:    -prof -auto-all 
