@@ -1,1 +1,0 @@
-> fiddly1 :: Int

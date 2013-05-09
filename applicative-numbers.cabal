@@ -11,7 +11,7 @@ description:
   .
   Project wiki page: <http://haskell.org/haskellwiki/applicative-numbers>
   .
-  Copyright 2009 Conal Elliott; BSD3 license.
+  Copyright 2009-2013 Conal Elliott; BSD3 license.
   .
   .
   Instances of @Num@ classes for applicative functors.  To be @#include@'d after
