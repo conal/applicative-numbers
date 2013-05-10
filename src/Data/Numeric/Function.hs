@@ -27,5 +27,9 @@ import Control.Applicative (Applicative(..),liftA2)
 #define INSTANCE_Ord
 #define INSTANCE_Enum
 
-#define APPLICATIVE ((->) a)
+-- #define APPLICATIVE ((->) a)
+-- Avoid GHC 7.6.3 bug (?) by stripping the parens. Luckily, they're not needed here.
+-- The Eq instance for (((->) a) b) is not recognized as equivalent to (a -> b).
+
+#define APPLICATIVE (->) a
 #include "ApplicativeNumeric-inc.hs"

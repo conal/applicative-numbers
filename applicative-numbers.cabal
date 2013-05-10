@@ -1,5 +1,5 @@
 name:                applicative-numbers
-version:             0.1.0
+version:             0.1.1
 cabal-version:       >= 1.2
 synopsis:            Applicative-based numeric instances
 category:            Data, Numerical
