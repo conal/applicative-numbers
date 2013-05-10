@@ -20,7 +20,9 @@ noOv meth = error $ meth ++ ": No overloading"
 
 -- TODO: splice APPLICATIVE into the error message.  I don't have the CPP chops.
 
--- Eq & Show are prerequisites for Num, so they have to be provided somehow
+-- Until GHC 7.4 (base 4.5.0.0), Eq & Show were prerequisites for Num, so they
+-- had to be provided somehow. I still need Ord for the Real instance and Eq for
+-- the Ord instance.
 
 -- Hack: the Functor [] is a no-op that allows for a ","-terminated CONSTRAINTS
 -- Requires FlexibleContexts
